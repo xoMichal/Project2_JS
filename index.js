@@ -34,7 +34,7 @@ inputValue.addEventListener("change", (e) => {
     // co ma sie stac po kliknieciu przelicz
     buttonClic.addEventListener("click", (e) => {
       const diffToPLN = chooseToCount * howMuchMoney;
-      resultPLN.innerHTML = `to ${diffToPLN} PLN`;
+      resultPLN.innerHTML = `to ${diffToPLN.toFixed(2)} PLN`;
       console.log(diffToPLN);
     });
   });
