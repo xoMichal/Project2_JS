@@ -13,22 +13,24 @@ fetch("https://api.nbp.pl/api/exchangerates/tables/a/last/1/?format=json")
     const nameUSD = data[0].rates[1].code;
     const nameEUR = data[0].rates[7].code;
     const nameCHR = data[0].rates[9].code;
+    
     USD.innerHTML = `${nameUSD} wynosi dzisiaj ${valueUSD}`;
     EUR.innerHTML = `${nameEUR} wynosi dzisiaj ${valueEUR}`; // funkcja która zwraca info pobierane z api poprzez feth
     CHR.innerHTML = `${nameCHR} wynosi dzisiaj ${valueCHR}`;
+    
+    
   });
-const inputValue = qs(".value");
-
+const inputValue = qs(".value"); 
 inputValue.addEventListener("change", (e) => {
   const howMuchMoney = inputValue.value;
-  console.log(howMuchMoney);
+  // console.log(howMuchMoney);
   const resultPLN = qs(".result");
   const selectValue = qs(".choose");
 
-  selectValue.addEventListener("change", (e) => {
+  selectValue.addEventListener("click", (e) => {
     const helpful = selectValue.value.split(" ");
     const chooseToCount = parseFloat(helpful[3]);
-    console.log(chooseToCount);
+    // console.log(chooseToCount);
 
     const buttonClic = qs(".count");
     // co ma sie stac po kliknieciu przelicz
@@ -36,6 +38,8 @@ inputValue.addEventListener("change", (e) => {
       const diffToPLN = chooseToCount * howMuchMoney;
       resultPLN.innerHTML = `to ${diffToPLN.toFixed(2)} PLN`;
       console.log(diffToPLN);
+      console.log(howMuchMoney);
+      console.log(chooseToCount);
     });
   });
 });
