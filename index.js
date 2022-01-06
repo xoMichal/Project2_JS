@@ -1,49 +1,38 @@
 const qs = (selector) => document.querySelector(selector);
 
-const USD = qs(".option1");
-const EUR = qs(".option2");
-const CHR = qs(".option3");
-
 fetch("https://api.nbp.pl/api/exchangerates/tables/a/last/1/?format=json")
   .then((data) => data.json())
   .then((data) => {
-    const valueUSD = data[0].rates[1].mid;
-    const valueEUR = data[0].rates[7].mid;
-    const valueCHR = data[0].rates[9].mid;
-    const nameUSD = data[0].rates[1].code;
-    const nameEUR = data[0].rates[7].code;
-    const nameCHR = data[0].rates[9].code;
-
-    USD.innerHTML = `${nameUSD}, ${valueUSD}`;
-    EUR.innerHTML = `${nameEUR}, ${valueEUR}`; // funkcja która zwraca info pobierane z api poprzez feth
-    CHR.innerHTML = `${nameCHR}, ${valueCHR}`;
+    data[0].rates
+      .filter(({ code }) => ["EUR", "USD", "CHF"].includes(code))
+      .forEach(({ code, mid }) => {
+        const option = qs(`.${code.toLowerCase()}`);
+        const text = `${code} ${mid}`;
+        option.innerHTML = text;
+      });
   });
-const inputValue = qs(".value");
-inputValue.addEventListener("change", (e) => {
-  let howMuchMoney = inputValue.value;
-  // console.log(howMuchMoney);
-  const resultPLN = qs(".result");
-  const selectValue = qs(".choose");
 
-  selectValue.addEventListener("click", (e) => {
-    const helpful = selectValue.value.split(" ");
-    const chooseToCount = parseFloat(helpful[1]);
-    // console.log(chooseToCount);
+  const amountDOM = qs(".value");
+amountDOM.addEventListener("change", (e) => {
+  let choosenAmount = amountDOM.value;
+
+  const resultInPLNCurrency = qs(".result");
+  const choiceOfCurrencies = qs(".choose");
+
+  choiceOfCurrencies.addEventListener("click", (e) => {
+    const stringToSeparateNumber = choiceOfCurrencies.value.split(" ");
+    const RateOfTheSelectedCurrency = parseFloat(stringToSeparateNumber[1]);
 
     const buttonClic = qs(".count");
-    // co ma sie stac po kliknieciu przelicz
-    buttonClic.addEventListener("click", (e) => {
-      howMuchMoney === inputValue.value
-        ? console.log(1)
-        : (howMuchMoney = inputValue.value);
-      const diffToPLN = chooseToCount * howMuchMoney;
-      resultPLN.innerHTML = `to ${diffToPLN.toFixed(2)} PLN`;
 
-      // console.log(diffToPLN);
-      // console.log(howMuchMoney);
-      // console.log(chooseToCount);
+  buttonClic.addEventListener("click", (e) => {
+      choosenAmount === amountDOM.value
+        ? console.log(1)
+        : (choosenAmount = amountDOM.value);
+
+      const resultInOtherCurrency = RateOfTheSelectedCurrency * choosenAmount;
+      
+      resultInPLNCurrency.innerHTML = `to ${resultInOtherCurrency.toFixed(2)} PLN`;
     });
   });
 });
-
-// pomysł 1 wrzucić feth który jest do danej waluty
