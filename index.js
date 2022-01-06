@@ -22,7 +22,7 @@ fetch("https://api.nbp.pl/api/exchangerates/tables/a/last/1/?format=json")
   });
 const inputValue = qs(".value"); 
 inputValue.addEventListener("change", (e) => {
-  const howMuchMoney = inputValue.value;
+  let howMuchMoney = inputValue.value;
   // console.log(howMuchMoney);
   const resultPLN = qs(".result");
   const selectValue = qs(".choose");
@@ -35,11 +35,13 @@ inputValue.addEventListener("change", (e) => {
     const buttonClic = qs(".count");
     // co ma sie stac po kliknieciu przelicz
     buttonClic.addEventListener("click", (e) => {
+      howMuchMoney === inputValue.value ? console.log(1) : howMuchMoney = inputValue.value;
       const diffToPLN = chooseToCount * howMuchMoney;
       resultPLN.innerHTML = `to ${diffToPLN.toFixed(2)} PLN`;
-      console.log(diffToPLN);
-      console.log(howMuchMoney);
-      console.log(chooseToCount);
+      
+      // console.log(diffToPLN);
+      // console.log(howMuchMoney);
+      // console.log(chooseToCount);
     });
   });
 });
